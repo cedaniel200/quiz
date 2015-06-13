@@ -16,12 +16,13 @@ router.get('/author', function(req, res) {
 });
 
 // AUTOLOAD de comandos con :quizId
-router.param('quizId', quizController.load); // AUTOLOAD :quizId
+router.param('quizId',    quizController.load); // AUTOLOAD :quizId
+router.param('commentId', commentController.load); // AUTOLOAD :commentId
 
 // Definicion de rutas de sessionController
 router.get('/login',      sessionController.new); // Formulario de login
 router.post('/login',     sessionController.create); // crear sessionController
-router.get('/logout',  sessionController.destroy ); // destruir sesion, deberia ser delete para trabajar con delete se debe
+router.get('/logout',     sessionController.destroy ); // destruir sesion, deberia ser delete para trabajar con delete se debe
 // poner el boton logout que esta en el layout.ejs entre un formulario methodOverride para sobreescribir el metodo get y pasarlo a delete
 
 
@@ -38,7 +39,7 @@ router.delete('/Quizes/:quizId(\\d+)',        sessionController.loginRequired, q
 // Definicion de las rutas de comentarios
 router.get('/quizes/:quizId(\\d+)/comments/new',            commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments',               commentController.create);
-
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish); // DEBIA SER UN put
 
 
 module.exports = router;
