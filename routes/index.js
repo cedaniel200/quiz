@@ -3,6 +3,7 @@ var router = express.Router();
 
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
+var sessionController = require('../controllers/session_controller');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -16,6 +17,13 @@ router.get('/author', function(req, res) {
 
 // AUTOLOAD de comandos con :quizId
 router.param('quizId', quizController.load); // AUTOLOAD :quizId
+
+// Definicion de rutas de sessionController
+router.get('/login',      sessionController.new); // Formulario de login
+router.post('/login',     sessionController.create); // crear sessionController
+router.get('/logout',  sessionController.destroy ); // destruir sesion, deberia ser delete para trabajar con delete se debe
+// poner el boton logout que esta en el layout.ejs entre un formulario methodOverride para sobreescribir el metodo get y pasarlo a delete
+
 
 // Definición de rutas del /quizes
 router.get('/quizes',                         quizController.index);
