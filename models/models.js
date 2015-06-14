@@ -30,7 +30,7 @@ var sequelize = new Sequelize(DB_name,user,pwd,
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 
 // Importar definicion de la tabla Comment
-var comment_path = path.join(__dirname,'Comment');
+var comment_path = path.join(__dirname,'comment');
 var Comment = sequelize.import(comment_path);
 
 Comment.belongsTo(Quiz);
