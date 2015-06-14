@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var partials = require('express-partials');
 var methodOverride = require('method-override');
 var session = require('express-session');
+var moment = require('moment');
 
 var routes = require('./routes/index');
 
@@ -39,6 +40,24 @@ app.use(function(req, res, next){
   // Hacer visible req.session en las vistas
   res.locals.session = req.session;
   next();
+});
+
+// MW para auto-logout
+app.use('/*', function(req, res, next){
+  if(req.session.user){
+    var fecha_actual = moment();
+    var fecha_session = moment(req.session.time);
+    var diferencia = fecha_actual.diff(fecha_session, 'minute')
+    if( diferencia < 2){
+      req.session.time = fecha_actual;
+      next();
+    }else{
+      delete req.session.user;
+      res.redirect(req.session.redir.toString());
+    }
+  }else{
+    next();
+  }
 });
 
 app.use('/', routes);
